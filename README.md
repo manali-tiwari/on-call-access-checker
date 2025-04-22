@@ -5,7 +5,7 @@ You can run the backend server directly in your browser using CodeSandbox.io - n
 ## 🚀 Quick Start Guide
 
 1. **Open in CodeSandbox**  
-   [![Open in CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/p/github/manali-tiwari/on-call-access-checker/main?file=/backend/cmd/server/main.go)
+   [![Open in CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/p/github/manali-tiwari/on-call-access-checker/master?file=/backend/cmd/server/main.go)
 
 2. **Configure Environment**  
    - Open the `.env` file in the `backend` folder
