@@ -56,7 +56,27 @@ You can run the backend server directly in your browser using CodeSandbox.io - n
     }
     ```
 
-6. 💻 **Tips**
+6. 📡 **API Testing**
+    
+   CURL Commands
+
+   ```bash
+   curl -X POST http://localhost:8080/api/check-access \   
+   -d "email=user@example.com" \
+   -d "environment=Production"
+  
+   {"vpn":true,"production":true,"configTool":true,"currentProfile":"mock-profile","missingGroups":[],"validUntil":"2025-04-22T18:56:09Z","profileArn":"arn:aws:iam::123456789012:user/mock-user"}
+   ```
+
+   ```bash
+   curl -X POST http://localhost:8080/api/check-access \ 
+   -d "email=test@company.com" \
+   -d "environment=Staging"   
+
+   {"vpn":true,"production":true,"configTool":true,"currentProfile":"dev","missingGroups":[]}
+   ```
+   
+7. 💻 **Tips**
 
     Terminal Shortcuts:
     - Ctrl+`` to toggle terminal
@@ -83,7 +103,7 @@ You can run the backend server directly in your browser using CodeSandbox.io - n
     go mod tidy
     ```
 
-7. 🛠️ **Dependencies**
+8. 🛠️ **Dependencies**
     
     Automatically installed in CodeSandbox:
     - Go 1.22+
@@ -91,7 +111,7 @@ You can run the backend server directly in your browser using CodeSandbox.io - n
     - Okta SDK
     - AWS SDK   
 
-8. 📦 **Alternative Local Setup**
+9. 📦 **Alternative Local Setup**
     
     ```bash
     git clone https://github.com/yourusername/on-call-access-checker.git
@@ -99,22 +119,3 @@ You can run the backend server directly in your browser using CodeSandbox.io - n
     go mod download
     go run ./cmd/server/main.go
     ```
-9. 📡 **API Testing**
-    
-   CURL Commands
-
-   ```bash
-   curl -X POST http://localhost:8080/api/check-access \   
-   -d "email=user@example.com" \
-   -d "environment=Production"
-  
-   {"vpn":true,"production":true,"configTool":true,"currentProfile":"mock-profile","missingGroups":[],"validUntil":"2025-04-22T18:56:09Z","profileArn":"arn:aws:iam::123456789012:user/mock-user"}
-   ```
-
-   ```bash
-   curl -X POST http://localhost:8080/api/check-access \ 
-   -d "email=test@company.com" \
-   -d "environment=Staging"   
-
-   {"vpn":true,"production":true,"configTool":true,"currentProfile":"dev","missingGroups":[]}
-   ```
