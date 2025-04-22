@@ -1,0 +1,33 @@
+.PHONY: run build test clean
+
+# Variables
+BINARY_NAME=oncall-backend
+GO_BUILD=go build -o bin/$(BINARY_NAME)
+GO_RUN=go run cmd/server/main.go
+DOCKER_IMAGE=oncall-backend
+
+run:
+	@echo "Starting backend server..."
+	@$(GO_RUN)
+
+build:
+	@echo "Building backend binary..."
+	@mkdir -p bin
+	@$(GO_BUILD) ./cmd/server/
+
+test:
+	@echo "Running tests..."
+	@go test -v ./...
+
+docker-build:
+	@echo "Building Docker image..."
+	@docker build -t $(DOCKER_IMAGE) .
+
+docker-run:
+	@echo "Running Docker container..."
+	@docker run -p 8080:8080 --env-file .env $(DOCKER_IMAGE)
+
+clean:
+	@echo "Cleaning backend..."
+	@rm -rf bin/
+	@go clean
