@@ -61,7 +61,8 @@ You can run the backend server directly in your browser using CodeSandbox.io - n
    CURL Commands
 
    ```bash
-   curl -X POST http://localhost:8080/api/check-access \   
+   curl -X POST http://localhost:8080/api/check-access \
+   -H "Content-Type: application/x-www-form-urlencoded" \
    -d "email=user@example.com" \
    -d "environment=Production"
   
@@ -69,7 +70,8 @@ You can run the backend server directly in your browser using CodeSandbox.io - n
    ```
 
    ```bash
-   curl -X POST http://localhost:8080/api/check-access \ 
+   curl -X POST http://localhost:8080/api/check-access \
+   -H "Content-Type: application/x-www-form-urlencoded" \
    -d "email=test@company.com" \
    -d "environment=Staging"   
 
