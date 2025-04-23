@@ -122,11 +122,14 @@ You can run the backend server directly in your browser using CodeSandbox.io - n
     
 ## Quick Start Guide: Frontend
 
-    ```bash
-    npx create-react-app frontend --template typescript //creates a new react app called frontend
-    cd frontend //change the default generated src/App.tsx file                                      
+    # creates a new react app called frontend
+    npx create-react-app frontend --template typescript
+
+    # change the default generated src/App.tsx file 
+    cd frontend
+
     npm start
-    ```
+
    Start the backend server and then go to http://localhost:3000/ 
 
    <img width="1393" alt="Screenshot 2025-04-22 at 10 40 26 PM" src="https://github.com/user-attachments/assets/f0ec4fa0-94ef-4c2b-9b35-0b57d20a0784" />
