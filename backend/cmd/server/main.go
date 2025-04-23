@@ -1,6 +1,9 @@
+// main.go (updated)
 package main
 
 import (
+	"bytes"
+	"io"
 	"log"
 	"os"
 
@@ -33,6 +36,14 @@ func main() {
 			c.AbortWithStatus(204)
 			return
 		}
+
+		// Log incoming requests
+		if c.Request.Method == "POST" {
+			body, _ := io.ReadAll(c.Request.Body)
+			log.Printf("Incoming request: %s %s\nBody: %s", c.Request.Method, c.Request.URL.Path, string(body))
+			c.Request.Body = io.NopCloser(bytes.NewBuffer(body))
+		}
+
 		c.Next()
 	})
 

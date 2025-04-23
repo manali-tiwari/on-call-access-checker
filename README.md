@@ -62,18 +62,16 @@ You can run the backend server directly in your browser using CodeSandbox.io - n
 
    ```bash
    curl -X POST http://localhost:8080/api/check-access \
-   -H "Content-Type: application/x-www-form-urlencoded" \
-   -d "email=user@example.com" \
-   -d "environment=Production"
+    -H "Content-Type: application/json" \
+    -d '{"email":"user@example.com","environment":"Production"}'
   
    {"vpn":true,"production":true,"configTool":true,"currentProfile":"mock-profile","missingGroups":[],"validUntil":"2025-04-22T18:56:09Z","profileArn":"arn:aws:iam::123456789012:user/mock-user"}
    ```
 
    ```bash
    curl -X POST http://localhost:8080/api/check-access \
-   -H "Content-Type: application/x-www-form-urlencoded" \
-   -d "email=test@company.com" \
-   -d "environment=Staging"   
+    -H "Content-Type: application/json" \
+    -d '{"email":"test@company.com","environment":"Staging"}'  
 
    {"vpn":true,"production":true,"configTool":true,"currentProfile":"dev","missingGroups":[]}
    ```

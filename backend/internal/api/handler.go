@@ -1,6 +1,9 @@
 package api
 
 import (
+	"bytes"
+	"io"
+	"log"
 	"net/http"
 	"time"
 
@@ -25,6 +28,11 @@ type AccessCheckResponse struct {
 	ProfileARN     string   `json:"profileArn,omitempty"`
 }
 
+type AccessCheckRequest struct {
+	Email       string `json:"email" binding:"required,email"`
+	Environment string `json:"environment" binding:"required"`
+}
+
 func NewHandler(oktaAuth auth.OktaAuthenticator, awsAuth auth.AWSAuthenticator) *Handler {
 	return &Handler{
 		oktaAuth: oktaAuth,
@@ -37,27 +45,42 @@ func (h *Handler) RegisterRoutes(router *gin.Engine) {
 }
 
 func (h *Handler) checkAccess(c *gin.Context) {
-	email := c.PostForm("email")
-	environment := c.DefaultPostForm("environment", "Production")
+	// Log and read the raw request body
+	body, err := io.ReadAll(c.Request.Body)
+	if err != nil {
+		log.Printf("Error reading request body: %v", err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
+		return
+	}
+	log.Printf("Raw request body: %s", string(body))
 
-	if email == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "email is required"})
+	// Restore the body for binding
+	c.Request.Body = io.NopCloser(bytes.NewBuffer(body))
+
+	var request AccessCheckRequest
+	if err := c.ShouldBindJSON(&request); err != nil {
+		log.Printf("Request binding error: %v", err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
+	log.Printf("Processing request for email: %s, environment: %s", request.Email, request.Environment)
+
 	// Check Okta access
-	accessStatus, err := h.oktaAuth.CheckAccess(email)
+	accessStatus, err := h.oktaAuth.CheckAccess(request.Email)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		log.Printf("Okta access check error: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to check access permissions"})
 		return
 	}
 
 	// Check AWS profile (only if checking production environment)
 	var awsProfile *auth.AWSProfile
-	if environment == "Production" {
+	if request.Environment == "Production" {
 		awsProfile, err = h.awsAuth.GetProfileInfo()
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			log.Printf("AWS profile check error: %v", err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to check AWS profile"})
 			return
 		}
 	} else {
@@ -85,9 +108,10 @@ func (h *Handler) checkAccess(c *gin.Context) {
 	}
 
 	// Set expiration if production access is granted
-	if accessStatus.Production && environment == "Production" {
+	if accessStatus.Production && request.Environment == "Production" {
 		response.ValidUntil = time.Now().Add(ProductionAccessDuration).Format(time.RFC3339)
 	}
 
+	log.Printf("Returning response: %+v", response)
 	c.JSON(http.StatusOK, response)
 }
