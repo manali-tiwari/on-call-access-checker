@@ -1,8 +1,8 @@
-# On-Call Access Checker (Backend)
+# On-Call Access Checker
+
+## Quick Start Guide: Backend
 
 You can run the backend server directly in your browser using CodeSandbox.io - no local setup required!
-
-## 🚀 Quick Start Guide
 
 1. **Open in CodeSandbox**  
    [![Open in CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/p/github/manali-tiwari/on-call-access-checker/master?file=/backend/cmd/server/main.go)
@@ -23,14 +23,14 @@ You can run the backend server directly in your browser using CodeSandbox.io - n
    cd backend
    go run ./cmd/server/main.go
 
-4. 🔧 **Mock Mode Features**
+4. **Mock Mode Features**
 
     When no credentials are provided:
     - ✅ Auto-enables mock Okta responses
     - ✅ Simulates AWS profile data
     - 🌐 All API endpoints remain functional
 
-5. 🌐 **API Endpoints**
+5. **API Endpoints**
    
    *POST* /api/check-access
 
@@ -56,7 +56,7 @@ You can run the backend server directly in your browser using CodeSandbox.io - n
     }
     ```
 
-6. 📡 **API Testing**
+6. **API Testing**
     
    CURL Commands
 
@@ -76,7 +76,7 @@ You can run the backend server directly in your browser using CodeSandbox.io - n
    {"vpn":true,"production":true,"configTool":true,"currentProfile":"dev","missingGroups":[]}
    ```
    
-7. 💻 **Tips**
+7. **Tips**
 
     Terminal Shortcuts:
     - Ctrl+`` to toggle terminal
@@ -103,7 +103,7 @@ You can run the backend server directly in your browser using CodeSandbox.io - n
     go mod tidy
     ```
 
-8. 🛠️ **Dependencies**
+8. **Dependencies**
     
     Automatically installed in CodeSandbox:
     - Go 1.22+
@@ -111,7 +111,7 @@ You can run the backend server directly in your browser using CodeSandbox.io - n
     - Okta SDK
     - AWS SDK   
 
-9. 📦 **Alternative Local Setup**
+9. **Alternative Local Setup**
     
     ```bash
     git clone https://github.com/yourusername/on-call-access-checker.git
@@ -119,3 +119,14 @@ You can run the backend server directly in your browser using CodeSandbox.io - n
     go mod download
     go run ./cmd/server/main.go
     ```
+    
+## Quick Start Guide: Frontend
+
+    ```bash
+    npx create-react-app frontend --template typescript //creates a new react app called frontend
+    cd frontend //change the default generated src/App.tsx file                                      
+    npm start
+    ```
+   Start the backend server and then go to http://localhost:3000/ 
+
+   <img width="1393" alt="Screenshot 2025-04-22 at 10 40 26 PM" src="https://github.com/user-attachments/assets/f0ec4fa0-94ef-4c2b-9b35-0b57d20a0784" />
