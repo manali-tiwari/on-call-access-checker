@@ -47,12 +47,15 @@ func NewOktaAuth() (*OktaAuth, error) {
 
 func (o *OktaAuth) CheckAccess(email string) (*OktaAccessStatus, error) {
 	if o.mock {
-		// Mock response - grants all access
-		return &OktaAccessStatus{
-			VPN:        true,
-			Production: true,
-			ConfigTool: true,
-		}, nil
+		for _, user := range MockUsers {
+			if user.Email == email {
+				return &OktaAccessStatus{
+					VPN:        user.VPN,
+					Production: user.Production,
+					ConfigTool: user.ConfigTool,
+				}, nil
+			}
+		}
 	}
 
 	user, _, err := o.client.User.GetUser(context.Background(), email)

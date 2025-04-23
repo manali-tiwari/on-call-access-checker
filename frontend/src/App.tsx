@@ -77,8 +77,9 @@ export default function App() {
       <form onSubmit={handleCheck} style={{ marginBottom: '20px' }}>
         <div style={{ marginBottom: '10px' }}>
           <label>Environment:</label>
-          <select disabled style={{ display: 'block', width: '100%', padding: '8px' }}>
-            <option>Production</option>
+          <select style={{ display: 'block', width: '100%', padding: '8px' }}>
+            <option value="Production">Production</option>
+            <option value="Dev">Dev</option>
           </select>
         </div>
         

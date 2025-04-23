@@ -10,7 +10,7 @@ import (
 )
 
 type AWSAuthenticator interface {
-	GetProfileInfo() (*AWSProfile, error)
+	GetProfileInfo(email string) (*AWSProfile, error)
 }
 
 type AWSAuth struct {
@@ -41,14 +41,16 @@ func NewAWSAuth() (*AWSAuth, error) {
 	return &AWSAuth{region: region}, nil
 }
 
-func (a *AWSAuth) GetProfileInfo() (*AWSProfile, error) {
+func (a *AWSAuth) GetProfileInfo(email string) (*AWSProfile, error) {
 	if a.mock {
-		// Return mock AWS profile
-		return &AWSProfile{
-			Name:      "mock-profile",
-			ARN:       "arn:aws:iam::123456789012:user/mock-user",
-			AccountID: "123456789012",
-		}, nil
+		for _, user := range MockUsers {
+			if user.Email == email {
+				return &AWSProfile{
+					Name: user.ProfileName,
+					ARN:  user.ProfileARN,
+				}, nil
+			}
+		}
 	}
 
 	profile := os.Getenv("AWS_PROFILE")

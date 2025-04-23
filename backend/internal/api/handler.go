@@ -69,22 +69,15 @@ func (h *Handler) checkAccess(c *gin.Context) {
 	// Check Okta access
 	accessStatus, err := h.oktaAuth.CheckAccess(request.Email)
 	if err != nil {
-		log.Printf("Okta access check error: %v", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to check access permissions"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	// Check AWS profile (only if checking production environment)
-	var awsProfile *auth.AWSProfile
-	if request.Environment == "Production" {
-		awsProfile, err = h.awsAuth.GetProfileInfo()
-		if err != nil {
-			log.Printf("AWS profile check error: %v", err)
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to check AWS profile"})
-			return
-		}
-	} else {
-		awsProfile = &auth.AWSProfile{Name: "dev", ARN: ""}
+	// Check AWS profile
+	awsProfile, err := h.awsAuth.GetProfileInfo(request.Email)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
 	}
 
 	response := AccessCheckResponse{
